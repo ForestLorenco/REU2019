@@ -48,11 +48,13 @@ def doSMOTE(filename, type):
         print("========Count of Classes========")
         print(df['class'].value_counts())
         temp = temp.drop("Tester", axis=1)
+        test = test.drop("Tester", axis=1)
 
         # This is to convert the classes to numbers
         # print("========Head of the Data (after conversion)========")
         d = {"class": {"Positive": 0, "Negative": 1, "Neutral": 2}}
         temp.replace(d, inplace=True)
+        test.replace(d, inplace=True)
         # print(df.head())
 
         # X is the set of features
@@ -72,7 +74,7 @@ def doSMOTE(filename, type):
         print(sorted(collections.Counter(y_resampled).items()))
 
         write_data(X_resampled, y_resampled, type, "Tester"+str(i),"train")
-        write_data(X_test, y_test, type,"Tester"+str(i), "test")
+        write_data(X_test, y_test, type, "Tester"+str(i), "test")
 
 
 
