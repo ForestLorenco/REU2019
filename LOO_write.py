@@ -261,4 +261,15 @@ if __name__ == "__main__":
         'Participant12': [2, 13, 14, 16, 19, 21, 27, 28, 29, 31, 32, 43, 45, 46, 47, 52, 54, 55, 56, 58, 64, 71, 79, 80,
                           81, 83, 90, 94, 99, 101, 104, 107, 109, 112, 113, 114, 116]}
 
-    LOODataSet(18, mispercievedSeq, mispercievedRan)
+    #LOODataSet(18, mispercievedSeq, mispercievedRan)
+    keys = list(mispercievedRan.keys())
+    for i in range(len(keys)):
+        print("Tester{} has perception rate on Random of {}".format(i+1, 1-len(mispercievedRan[keys[i]])/117))
+
+    print("==================================")
+
+    keys = list(mispercievedSeq.keys())
+    for i in range(len(keys)):
+        print("Tester{} has perception rate on Seq of {}".format(i + 1, 1-len(mispercievedSeq[keys[i]]) / 117))
+
+
