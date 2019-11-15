@@ -46,7 +46,8 @@ def plotModelMatrix(y_true,y_pred, name, tester,type, title):
     print('accuracy of SAD:{0}'.format(acc6))
     print('accuracy:{0}'.format(acc))
     '''
-
+    acc = accuracy_score(y_true, y_pred)
+    print('accuracy:{0}'.format(acc))
     cm = confusion_matrix(y_true, y_pred, labels=labels)
     cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
     cm_sum = np.sum(cm, axis=1, keepdims=True)
@@ -75,7 +76,7 @@ def plotModelMatrix(y_true,y_pred, name, tester,type, title):
     sns.heatmap(cm, cmap=plt.cm.Blues ,square=True ,annot=annot, fmt='', ax=ax, vmin=0, vmax=1)
     plt.title(title)  #If you need to be able to change the name of the martix here
     plt.savefig(r'ConfusionMatrices'+type+'/'+name+str(tester)+'ResponseConfusionMatrix.png')  #Here you can choose where to save and only save the image of the matrix
-    #plt.show()
+    plt.show()
 
 def plotMatrix(y_true,y_pred, name, tester,type, title):
     #print(y_true, y_pred)
@@ -133,7 +134,7 @@ def plotMatrix(y_true,y_pred, name, tester,type, title):
 
     
 
-def main():
+if __name__ == "__main__":
     y_true = []
     y_pred = [] 
     '''
@@ -180,11 +181,21 @@ def main():
         clines = cfile.readlines()
         rlines = rfile.readlines()
         for line in clines:
-            s = line[:1]                                   
-            y_true.append(s)
+            s = line[:1]
+            if s in ["1","2","3","6"]:
+                y_true.append("2")
+            elif s == "4":
+                y_true.append("1")
+            else:
+                y_true.append("3")
         for line in rlines:
             s = line[:1]
-            y_pred.append(s)
+            if s in ["1","2","3","6"]:
+                y_pred.append("2")
+            elif s == "4":
+                y_pred.append("1")
+            else:
+                y_pred.append("3")
 
     for i in range(1,13):
         cfile = open("ResponseDataSequential/CorrectResponse.txt","r")
@@ -192,13 +203,23 @@ def main():
         clines = cfile.readlines()
         rlines = rfile.readlines()
         for line in clines:
-            s = line[:1]                                   
-            y_true.append(s)
+            s = line[:1]
+            if s in ["1", "2", "3", "6"]:
+                y_true.append("2")
+            elif s == "4":
+                y_true.append("1")
+            else:
+                y_true.append("3")
         for line in rlines:
             s = line[:1]
-            y_pred.append(s)
+            if s in ["1", "2", "3", "6"]:
+                y_pred.append("2")
+            elif s == "4":
+                y_pred.append("1")
+            else:
+                y_pred.append("3")
 
-    plotMatrix(y_true,y_pred,"","All","Sequential", "Participant Response Random Stimilus")
+    plotModelMatrix(y_true,y_pred,"","All","Sequential", "Participant Response Random Stimilus")
 
     #Sequential
     '''
@@ -243,11 +264,21 @@ def main():
         clines = cfile.readlines()
         rlines = rfile.readlines()
         for line in clines:
-            s = line[:1]                                   
-            y_true.append(s)
+            s = line[:1]
+            if s in ["1", "2", "3", "6"]:
+                y_true.append("2")
+            elif s == "4":
+                y_true.append("1")
+            else:
+                y_true.append("3")
         for line in rlines:
             s = line[:1]
-            y_pred.append(s)
+            if s in ["1", "2", "3", "6"]:
+                y_pred.append("2")
+            elif s == "4":
+                y_pred.append("1")
+            else:
+                y_pred.append("3")
 
     for i in range(1,13):
         cfile = open("ResponseDataRandom/CorrectResponse.txt","r")
@@ -255,14 +286,24 @@ def main():
         clines = cfile.readlines()
         rlines = rfile.readlines()
         for line in clines:
-            s = line[:1]                                   
-            y_true.append(s)
+            s = line[:1]
+            if s in ["1", "2", "3", "6"]:
+                y_true.append("2")
+            elif s == "4":
+                y_true.append("1")
+            else:
+                y_true.append("3")
         for line in rlines:
             s = line[:1]
-            y_pred.append(s)
+            if s in ["1", "2", "3", "6"]:
+                y_pred.append("2")
+            elif s == "4":
+                y_pred.append("1")
+            else:
+                y_pred.append("3")
 
-    plotMatrix(y_true,y_pred,"","All","Random","Participant Response Sequential Stimilus")
-
+    plotModelMatrix(y_true,y_pred,"","All","Random","Participant Response Sequential Stimilus")
+    '''
     #Make the model matrices
     temp = makeModelData("RandomCorrect.csv","RandomPred.csv")
     plotModelMatrix(temp[0],temp[1],"","ModelRan","Random","Model Classification Random Stimilus")
@@ -277,8 +318,5 @@ def main():
     #Make the model matrices
     temp = makeModelData("SequentialCorrect.csv","SequentialPred.csv")
     plotModelMatrix(temp[0],temp[1],"","ModelSeq","Sequential","Model Classification Sequential Stimilus")
+    '''
     print('finished')
-
-
-    
-main()

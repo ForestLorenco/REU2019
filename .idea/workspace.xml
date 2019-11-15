@@ -3,8 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="97f18687-972e-4e71-a272-731d45a5cf4f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/random_box.png" beforeDir="false" afterPath="$PROJECT_DIR$/random_box.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seq_box.png" beforeDir="false" afterPath="$PROJECT_DIR$/seq_box.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConfusionMatricesRandom/AllResponseConfusionMatrix.png" beforeDir="false" afterPath="$PROJECT_DIR$/ConfusionMatricesRandom/AllResponseConfusionMatrix.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConfusionMatricesSequential/AllResponseConfusionMatrix.png" beforeDir="false" afterPath="$PROJECT_DIR$/ConfusionMatricesSequential/AllResponseConfusionMatrix.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/confusion.py" beforeDir="false" afterPath="$PROJECT_DIR$/confusion.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
