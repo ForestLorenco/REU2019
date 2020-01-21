@@ -119,7 +119,7 @@ def plotMatrix(y_true,y_pred, name, tester,type, title):
                 annot[i, j] = ''
             else:
                 annot[i, j] = '%.1f%%' % (p)
-    cm = pd.DataFrame(cm, index=['ANG','DIS','FEA','HAP','NEU','SAD'], columns=['ANG','DIS','FEA','HAP','NEU','SAD']) #here you can change the label 
+    cm = pd.DataFrame(cm, index=['HAP','ANG','NEU','SAD','DIS','FEA'], columns=['HAP','ANG','NEU','SAD','DIS','FEA']) #here you can change the label
     cm.index.name = 'Label'
     cm.columns.name = 'Prediction'
     figsize=(6,6)
@@ -182,20 +182,22 @@ if __name__ == "__main__":
         rlines = rfile.readlines()
         for line in clines:
             s = line[:1]
-            if s in ["1","2","3","6"]:
-                y_true.append("2")
-            elif s == "4":
-                y_true.append("1")
-            else:
-                y_true.append("3")
+            y_true.append(s)
+            # if s in ["2","4","5","6"]:
+            #     y_true.append("2")
+            # elif s == "1":
+            #     y_true.append("1")
+            # else:
+            #     y_true.append("3")
         for line in rlines:
             s = line[:1]
-            if s in ["1","2","3","6"]:
-                y_pred.append("2")
-            elif s == "4":
-                y_pred.append("1")
-            else:
-                y_pred.append("3")
+            y_pred.append(s)
+            # if s in ["2", "4", "5", "6"]:
+            #     y_pred.append("2")
+            # elif s == "1":
+            #     y_pred.append("1")
+            # else:
+            #     y_pred.append("3")
 
     for i in range(1,13):
         cfile = open("ResponseDataSequential/CorrectResponse.txt","r")
@@ -204,22 +206,28 @@ if __name__ == "__main__":
         rlines = rfile.readlines()
         for line in clines:
             s = line[:1]
-            if s in ["1", "2", "3", "6"]:
+            y_true.append(s)
+            '''
+            if s in ["2", "4", "5", "6"]:
                 y_true.append("2")
-            elif s == "4":
+            elif s == "1":
                 y_true.append("1")
             else:
                 y_true.append("3")
+            '''
         for line in rlines:
             s = line[:1]
-            if s in ["1", "2", "3", "6"]:
+            y_pred.append(s)
+            '''
+            if s in ["2", "4", "5", "6"]:
                 y_pred.append("2")
-            elif s == "4":
+            elif s == "1":
                 y_pred.append("1")
             else:
                 y_pred.append("3")
+            '''
 
-    plotModelMatrix(y_true,y_pred,"","All","Sequential", "Participant Response Random Stimilus")
+    plotMatrix(y_true,y_pred,"","All","Sequential", "Participant Response Random Stimilus")
 
     #Sequential
     '''
@@ -265,21 +273,26 @@ if __name__ == "__main__":
         rlines = rfile.readlines()
         for line in clines:
             s = line[:1]
-            if s in ["1", "2", "3", "6"]:
+            y_true.append(s)
+            '''
+            if s in ["2", "4", "5", "6"]:
                 y_true.append("2")
-            elif s == "4":
+            elif s == "1":
                 y_true.append("1")
             else:
                 y_true.append("3")
+            '''
         for line in rlines:
             s = line[:1]
-            if s in ["1", "2", "3", "6"]:
+            y_pred.append(s)
+            '''
+            if s in ["2", "4", "5", "6"]:
                 y_pred.append("2")
-            elif s == "4":
+            elif s == "1":
                 y_pred.append("1")
             else:
                 y_pred.append("3")
-
+            '''
     for i in range(1,13):
         cfile = open("ResponseDataRandom/CorrectResponse.txt","r")
         rfile = open("ResponseDataRandom/ResponseParticipant"+str(i)+".txt","r")
@@ -287,22 +300,28 @@ if __name__ == "__main__":
         rlines = rfile.readlines()
         for line in clines:
             s = line[:1]
-            if s in ["1", "2", "3", "6"]:
+            y_true.append(s)
+            '''
+            if s in ["2", "4", "5", "6"]:
                 y_true.append("2")
-            elif s == "4":
+            elif s == "1":
                 y_true.append("1")
             else:
                 y_true.append("3")
+            '''
         for line in rlines:
             s = line[:1]
-            if s in ["1", "2", "3", "6"]:
+            y_pred.append(s)
+            '''
+            if s in ["2", "4", "5", "6"]:
                 y_pred.append("2")
-            elif s == "4":
+            elif s == "1":
                 y_pred.append("1")
             else:
                 y_pred.append("3")
+            '''
 
-    plotModelMatrix(y_true,y_pred,"","All","Random","Participant Response Sequential Stimilus")
+    plotMatrix(y_true,y_pred,"","All","Random","Participant Response Sequential Stimilus")
     '''
     #Make the model matrices
     temp = makeModelData("RandomCorrect.csv","RandomPred.csv")

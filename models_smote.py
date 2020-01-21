@@ -4,6 +4,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import pandas as pd
 import collections
 from imblearn.over_sampling import SMOTE, ADASYN
+from imblearn.under_sampling import RandomUnderSampler
 
 #sklearn for SVM
 from sklearn import svm
@@ -17,6 +18,8 @@ from tensorflow import keras
 # Helper libraries
 import numpy as np
 import matplotlib.pyplot as plt
+
+from collections import defaultdict
 
 #This does the smote process for oversampling
 def doSMOTE(filename):
@@ -48,6 +51,166 @@ def doSMOTE(filename):
 
 	return X_resampled,y_resampled
 
+#This undersamples the data to balance classes and writes it
+def undersample(filename):
+	print("Undersample on on "+filename)
+	#Load in the csv of the data from NNData
+	df = pd.read_csv("NN_SVMData/"+filename)
+	print("========Head of the Data========")
+	print(df.head())
+	#this shows there is a harsh imbalance of the classes (positive, negative, neutral)
+	print("========Count of Classes========")
+	print(df['class'].value_counts())
+
+	#This is to convert the classes to numbers
+	#print("========Head of the Data (after conversion)========")
+	d = {"class":{"Positive":0,"Negative":1,"Neutral":2}}
+	df.replace(d,inplace=True)
+	#print(df.head())
+
+	#X is the set of features
+	X = df[df.columns[:-1]].values
+	#y is the set of classes
+	y = df['class'].values
+
+	rus = RandomUnderSampler(random_state=0)
+	#rus.fit(X, y)
+	X_resampled, y_resampled = rus.fit_resample(X, y)
+	print("========After Undersampling Padding========")
+	print(sorted(collections.Counter(y_resampled).items()))
+
+	return X_resampled,y_resampled
+
+def video_seperate_gender(filename):
+	df = pd.read_csv("NN_SVMData/"+filename)
+	d = {"class":{"Positive":0,"Negative":1,"Neutral":2}}
+	df.replace(d,inplace=True)
+
+	ran = pd.read_csv("Random_Video_Analytics.csv")
+	ran = ran.values
+
+	seq = pd.read_csv("Seq_Video_Analytics.csv")
+	seq = seq.values
+	#print(df.head())
+
+	#X is the set of features
+	X = df[df.columns[:-1]].values
+	#y is the set of classes
+	y = df['class'].values
+
+	male_y = []
+	male_X = []
+	female_y = []
+	female_X = []
+
+	if 'Random' not in  filename:
+		for j in range(len(X)//18):
+			for i in range(18):
+				if seq[(j//11)][0] == "Female":
+					female_X.append(X[(j*18)+i])
+					female_y.append(y[(j*18)+i])
+				else:
+					male_X.append(X[(j*18)+i])
+					male_y.append(y[(j*18)+i])
+	else:
+		for j in range(len(X)//18):
+			for i in range(18):
+				if ran[j][0] == "Female":
+					female_X.append(X[(j*18)+i])
+					female_y.append(y[(j*18)+i])
+				else:
+					male_X.append(X[(j*18)+i])
+					male_y.append(y[(j*18)+i])
+	return male_X, male_y, female_X, female_y
+
+def tester_seperate_gender(filename):
+	df = pd.read_csv("NN_SVMData/"+filename)
+	d = {"class":{"Positive":0,"Negative":1,"Neutral":2}}
+	df.replace(d,inplace=True)
+
+	an = pd.read_csv("TesterInformation.csv")
+	an = an.values
+
+	#X is the set of features
+	X = df[df.columns[:-1]].values
+	#y is the set of classes
+	y = df['class'].values
+
+	male_y = []
+	male_X = []
+	female_y = []
+	female_X = []
+
+	
+	for j in range(len(X)//18):
+		for i in range(18):
+			if an[i][2] == "Female":
+				female_X.append(X[(j*18)+(i-1)])
+				female_y.append(y[(j*18)+(i-1)])
+			else:
+				male_X.append(X[(j*18)+(i-1)])
+				male_y.append(y[(j*18)+(i-1)])
+
+
+	return male_X, male_y, female_X, female_y
+
+def video_seperate_race(filename):
+	df = pd.read_csv("NN_SVMData/"+filename)
+	d = {"class":{"Positive":0,"Negative":1,"Neutral":2}}
+	df.replace(d,inplace=True)
+
+	ran = pd.read_csv("Random_Video_Analytics.csv")
+	ran = ran.values
+
+	seq = pd.read_csv("Seq_Video_Analytics.csv")
+	seq = seq.values
+	#print(df.head())
+
+	#X is the set of features
+	X = df[df.columns[:-1]].values
+	#y is the set of classes
+	y = df['class'].values
+
+	race_X = defaultdict(list)
+	race_y = defaultdict(list)
+
+
+	if 'Random' not in  filename:
+		for j in range(len(X)//18):
+			for i in range(18):
+				race_X[seq[(j//11)][1]].append(X[(j*18)+i])
+				race_y[seq[(j//11)][1]].append(X[(j*18)+i])
+	else:
+		for j in range(len(X)//18):
+			for i in range(18):
+				race_X[ran[j][1]].append(X[(j*18)+i])
+				race_y[ran[j][1]].append(y[(j*18)+i])
+				
+	return race_X, race_y
+
+def tester_seperate_race(filename):
+	df = pd.read_csv("NN_SVMData/"+filename)
+	d = {"class":{"Positive":0,"Negative":1,"Neutral":2}}
+	df.replace(d,inplace=True)
+
+	an = pd.read_csv("TesterInformation.csv")
+	an = an.values
+
+	#X is the set of features
+	X = df[df.columns[:-1]].values
+	#y is the set of classes
+	y = df['class'].values
+
+	race_X = defaultdict(list)
+	race_y = defaultdict(list)
+
+	
+	for j in range(len(X)//18):
+		for i in range(18):
+			race_X[an[i][3]].append(X[(j*18)+(i-1)])
+			race_y[an[i][3]].append(y[(j*18)+(i-1)])
+
+	return race_X, race_y
 
 #This writes the data back, now that it has been reformated, in arff format
 def writeData(X,y,type):
@@ -99,7 +262,7 @@ def plot_history(histories, key='acc'):
 	plt.xlim([0,max(history.epoch)])
 	input()
 
-#This function tests the data with a 2 layer neural network
+#This function tests the data with a convolutional neural network
 def makeNN(X,y):
 	print("============Testing data With Deep Learning============")
 	print(tf.__version__)
@@ -107,12 +270,21 @@ def makeNN(X,y):
 	print("Shape of raw data:",X.shape,y.shape)
 	#This partitions the indices randomly for 80% test data and 20% training data
 	indices = np.random.permutation(y.shape[0])
-	training_idx, test_idx = indices[:844], indices[844:]
+	training_idx, test_idx = indices[:692], indices[692:]
 	#print(indices)
 
 	#create training data
 	train_data, train_labels = X[training_idx], y[training_idx]
 	test_data,test_labels = X[test_idx], y[test_idx]
+
+	train_data = np.delete(train_data, 0, 1)
+	test_data = np.delete(test_data, 0, 1)
+
+	print("Shape of test data before:",test_data.shape,test_labels.shape)
+	print("Shape of train data before:",train_data.shape,train_labels.shape)
+
+	train_data = train_data.reshape(692,16,1,1)
+	test_data = test_data.reshape(172,16,1,1)
 	#Create testing data by
 
 
@@ -120,19 +292,16 @@ def makeNN(X,y):
 	print("Shape of test data:",test_data.shape,test_labels.shape)
 	print("Shape of train data:",train_data.shape,train_labels.shape)
 
-
-
+	
 
 	#Create network, input is already vectors, so no need to flatten, using relu activation function and softmax classifier
 	
 	model = keras.models.Sequential([
-	    keras.layers.Dense(32,activation=tf.nn.relu),
-	    keras.layers.BatchNormalization(),
-	    keras.layers.Dropout(0.2), #Helps overfitting
-	    keras.layers.Dense(64,activation=tf.nn.relu),
-	    keras.layers.BatchNormalization(),
-	    keras.layers.Dropout(0.2),
-	    keras.layers.Dense(3,activation=tf.nn.softmax)
+	    keras.layers.Conv2D(32, kernel_size=(1, 1), strides=(1, 1), activation=tf.nn.relu, input_shape=(16,1,1)),
+	    keras.layers.Conv2D(64, kernel_size=(1, 1), strides=(2, 2), activation=tf.nn.relu),
+		keras.layers.Flatten(),
+		keras.layers.Dense(1000, activation='relu'),
+		keras.layers.Dense(3, activation='softmax')
 	])
 
 	model.compile(optimizer='adam',
@@ -142,7 +311,7 @@ def makeNN(X,y):
 	
 	network = model.fit(train_data,
           train_labels, 
-          epochs=25, 
+          epochs=100, 
           validation_data=(test_data, test_labels),
           verbose=2)
 	
@@ -166,7 +335,23 @@ def makeSVM(X,y,max_iter):
 	return cross_val_score(clf, n_X, y, scoring='accuracy',cv=5)
 
 
-def main():
+if __name__ == "__main__":
+
+	X_seq,y_seq = undersample("EmotionDataSequentialAll.csv")
+	X_ran,y_ran = undersample("EmotionDataRandomAll.csv")
+
+	X_male_v, y_male_v, X_female_v, y_female_v = video_seperate_gender("EmotionDataRandomAll.csv")
+	X_male_u, y_male_u, X_female_u, y_female_u = tester_seperate_gender("EmotionDataRandomAll.csv")
+
+	X_race_v, y_race_v = video_seperate_race("EmotionDataRandomAll.csv")
+	X_race_u, y_race_u = tester_seperate_race("EmotionDataRandomAll.csv")
+
+
+	print(y_race_v)
+
+	#makeNN(X_ran,y_ran)
+
+	exit()
 	#do smote for sequential, random and all
 	X_seq,y_seq = doSMOTE("EmotionDataSequentialAll.csv")
 	X_ran,y_ran = doSMOTE("EmotionDataRandomAll.csv")
@@ -196,6 +381,3 @@ def main():
 		print("Model",keys[i])
 		results[keys[i]].append(makeSVM(data[i][0],data[i][1],iterlist[i]))
 	print(results)
-	
-	
-main()
