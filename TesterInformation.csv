@@ -1,12 +1,12 @@
 Participant,Age,Gender,Race,Education,Trials Done,Notes
-1,20,Female,Latina/White,Bachelors,"SM,RM","Her first answer for sequential muted was messed with, add temp value"
+1,20,Female,Latina,Bachelors,"SM,RM","Her first answer for sequential muted was messed with, add temp value"
 2,21,Male,White,Bachelors,"SM,RM",
 3,21,Female,Black,Bachelors,"SM,RM",
-4,21,Male,Jewish/White,Bachelors,"SM,RM",
+4,21,Male,White,Bachelors,"SM,RM",
 5,25,Male,Latino,Bachelors,"SM,RM",
 6,19,Female,Asian,Bachelors,"SM,RM",
 7,19,Male,Asian,Bachelors,"SM,RM",
-8,21,Female,egytian/leb.,masters,"SM,RM",Her first answer for sequential sound was messed up
+8,21,Female,Indian,masters,"SM,RM",Her first answer for sequential sound was messed up
 9,20,Female,Indian,Bachelors,"SM,RM",
 10,23,Male,African,bachelors,"SM,RM",
 11,21,Female,White,Masters,"SM,RM",
